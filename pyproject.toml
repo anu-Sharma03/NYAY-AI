@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nyay-ai"
+version = "0.1.0"
+description = "Forensic analyzer framework for evidence integrity and file validation"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+  { name = "Anu Sharma", email = "anu@example.com" }
+]
+license = { text = "MIT" }
+keywords = ["forensics", "security", "evidence", "analysis"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
