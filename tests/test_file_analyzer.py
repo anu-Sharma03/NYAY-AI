@@ -351,7 +351,7 @@ class TestFileForensicAnalyzer(unittest.TestCase):
                 "/nonexistent/file.txt"
             )
 
-    def test_png_signature_matches_declared_mime(self) -> None:
+      def test_png_signature_matches_declared_mime(self) -> None:
         """Test that a PNG signature matches image/png."""
         file_path = os.path.join(
             self.temp_dir.name,
