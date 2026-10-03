@@ -13,4 +13,8 @@ def detect_mime_from_magic(header: bytes) -> str:
         return "application/zip"
     if header.startswith(b"%PDF-"):
         return "application/pdf"
+    if header.startswith(b"\x7FELF"):
+        return "application/x-executable"
+    if header.startswith(b"MZ"):
+        return "application/x-msdownload"
     return "application/octet-stream"
