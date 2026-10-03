@@ -8,6 +8,7 @@ import os
 from typing import Any, Dict
 
 from nyay_ai.core.base_analyzer import BaseForensicAnalyzer
+from nyay_ai.forensic.magic_bytes import detect_mime_from_magic
 
 
 class FileForensicAnalyzer(BaseForensicAnalyzer):
@@ -47,7 +48,11 @@ class FileForensicAnalyzer(BaseForensicAnalyzer):
             "owner_gid": stat_result.st_gid,
         }
 
-    def verify_file_signature(self, file_path: str, declared_mime: str) -> Dict[str, Any]:
+    def verify_file_signature(
+        self,
+        file_path: str,
+        declared_mime: str,
+    ) -> Dict[str, Any]:
         """Verify file magic bytes against the declared MIME type.
 
         This helps detect extension spoofing or mislabeled artifact files.
@@ -58,7 +63,7 @@ class FileForensicAnalyzer(BaseForensicAnalyzer):
         with open(file_path, "rb") as handle:
             magic_bytes = handle.read(512)
 
-        detected_mime = self._detect_mime_from_magic(magic_bytes)
+        detected_mime = detect_mime_from_magic(magic_bytes)
         matches = detected_mime == declared_mime
 
         return {
@@ -74,22 +79,4 @@ class FileForensicAnalyzer(BaseForensicAnalyzer):
             ),
         }
 
-    def _detect_mime_from_magic(self, header: bytes) -> str:
-        """Infer MIME type from common magic bytes."""
-        if header.startswith(b"\x89PNG\r\n\x1a\n"):
-            return "image/png"
-        if header.startswith(b"\xFF\xD8\xFF"):
-            return "image/jpeg"
-        if header.startswith(b"GIF87a") or header.startswith(b"GIF89a"):
-            return "image/gif"
-        if header.startswith(b"PK\x03\x04"):
-            return "application/zip"
-        if header.startswith(b"%PDF-"):
-            return "application/pdf"
-        if header.startswith(b"\x7FELF"):
-            return "application/x-executable"
-        if header.startswith(b"MZ"):
-            return "application/x-msdownload"
-        if header.startswith(b"\x25\x50\x44\x46"):
-            return "application/pdf"
-        return "application/octet-stream"
+
